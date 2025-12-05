@@ -4,14 +4,18 @@
 
 void yyerror(const char *s);
 int yylex(void);
+
+double sym[26]; /* Symbol table for a-z */
 %}
 
 %union {
     double dval;
+    int ival;
 }
 
 %token <dval> NUMBER
-%token PLUS MINUS MULTIPLY DIVIDE LPAREN RPAREN EOL
+%token <ival> VARIABLE
+%token PLUS MINUS MULTIPLY DIVIDE ASSIGN LPAREN RPAREN EOL
 
 %type <dval> expr term factor
 
@@ -24,6 +28,10 @@ calculation:
 line:
     EOL
     | expr EOL { printf("Result: %f\n", $1); }
+    | VARIABLE ASSIGN expr EOL { 
+        sym[$1] = $3; 
+        printf("Variable %c = %f\n", $1 + 'a', $3); 
+    }
     ;
 
 expr:
@@ -47,6 +55,7 @@ term:
 
 factor:
     NUMBER
+    | VARIABLE { $$ = sym[$1]; }
     | LPAREN expr RPAREN { $$ = $2; }
     | MINUS factor { $$ = -$2; }
     ;

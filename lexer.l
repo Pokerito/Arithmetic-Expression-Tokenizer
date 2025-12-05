@@ -11,10 +11,12 @@ void yyerror(const char *s);
 %%
 
 [0-9]+(\.[0-9]+)?  { yylval.dval = atof(yytext); return NUMBER; }
+[a-z]              { yylval.ival = yytext[0] - 'a'; return VARIABLE; }
 "+"                { return PLUS; }
 "-"                { return MINUS; }
 "*"                { return MULTIPLY; }
 "/"                { return DIVIDE; }
+"="                { return ASSIGN; }
 "("                { return LPAREN; }
 ")"                { return RPAREN; }
 \n                 { return EOL; }
