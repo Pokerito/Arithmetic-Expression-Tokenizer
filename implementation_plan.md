@@ -12,22 +12,24 @@ Create a program that tokenizes and parses arithmetic expressions using Lex (Fle
 ### Project Structure
 Directory: `C:\Users\HP\.gemini\antigravity\scratch\arithmetic_tokenizer`
 
-#### [NEW] [lexer.l](file:///C:/Users/HP/.gemini/antigravity/scratch/arithmetic_tokenizer/lexer.l)
-- Defines tokens: `NUMBER`, `PLUS`, `MINUS`, `MULTIPLY`, `DIVIDE`, `LPAREN`, `RPAREN`, `EOL`.
-- Ignores whitespace.
-- Returns tokens to the parser.
+#### [MODIFY] [lexer.l](file:///C:/Users/HP/.gemini/antigravity/scratch/arithmetic_tokenizer/lexer.l)
+- Add rule for `[a-z]` to return `VARIABLE` token.
+- Add rule for `=` to return `ASSIGN` token.
 
-#### [NEW] [parser.y](file:///C:/Users/HP/.gemini/antigravity/scratch/arithmetic_tokenizer/parser.y)
-- Defines the grammar for arithmetic expressions.
-- Precedence rules for operators.
-- Evaluates the expression and prints the result.
-- Includes `main` function to drive the parsing.
+#### [MODIFY] [parser.y](file:///C:/Users/HP/.gemini/antigravity/scratch/arithmetic_tokenizer/parser.y)
+- Add `sym[26]` array to store values for variables 'a' through 'z'.
+- Define `VARIABLE` and `ASSIGN` tokens.
+- Update `union` to include `ival` (integer index) for variables.
+- Add grammar rule for assignment: `VARIABLE ASSIGN expr`.
+- Update `factor` to resolve `VARIABLE` to its value.
 
 #### [NEW] [build.bat](file:///C:/Users/HP/.gemini/antigravity/scratch/arithmetic_tokenizer/build.bat) (or instructions)
 - Script to compile the project if tools are available.
 
 ## Verification Plan
 ### Automated Tests
-- If tools are available, I will run a simple test case: `3 + 4 * 5`.
+- Test assignment: `a = 10`
+- Test usage: `a + 5` -> `15`
+- Test complex: `b = a * 2` -> `20`
 ### Manual Verification
 - User can run the compiled executable and type expressions.
